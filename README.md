@@ -7,6 +7,35 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Usuarios iniciales
+
+Para crear los dos usuarios de pruebas, ejecuta:
+
+```sh
+php artisan db:seed --class=UserSeeder
+```
+
+Tambien se incluye en `php artisan db:seed`. Las migraciones deben estar aplicadas.
+
+| Usuario | Email | Contrasena | Rol |
+| --- | --- | --- | --- |
+| Administrador de instalaciones | admin@example.com | password | company-admin |
+| Cliente de la web publica | cliente@example.com | password | customer |
+
+Las contrasenas genericas estan definidas en el seeder exclusivamente para pruebas.
+No utilices estas cuentas con estas credenciales en produccion.
+
+Las contrasenas se almacenan mediante el cast `hashed` de Laravel. El seeder se
+puede repetir sin duplicar usuarios ni roles, sin restablecer contrasenas o datos
+personales existentes y sin eliminar otros roles. Los usuarios nuevos se crean
+con el correo verificado.
+
+Este seeder solo prepara las cuentas y sus roles: no implementa los paneles
+protegidos, las redirecciones ni las reservas. El administrador no es un
+`super-admin`; su asignacion a una empresa queda pendiente de incorporar el modelo
+`Company` y `company_id`. El cliente tendra su area personal de reservas y perfil,
+separada del mantenimiento de instalaciones.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
