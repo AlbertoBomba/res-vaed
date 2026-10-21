@@ -7,6 +7,163 @@
 }
 
 @layer components {
+    .court-primary { background: #7954b3; color: #fff; border: 1px solid #7954b3; }
+    .court-primary:hover { background: #664198; }
+    .court-secondary { color: #78628e; background: #fff; border: 1px solid #e5dfee; }
+    .court-secondary:hover { background: #f5f0fb; }
+    .court-danger { color: #fff; background: #ac526c; }
+    .court-editor button:disabled, .court-card-footer button:disabled { opacity: .55; cursor: wait; }
+    .court-alert { display: flex; align-items: flex-start; gap: 10px; border: 1px solid; border-radius: 10px; padding: 15px 18px; font-size: 13px; margin-bottom: 22px; line-height: 1.7; }
+    .alert-success { background: #eef8f2; color: #327359; border-color: #d3ebdd; }
+    .alert-warning { background: #fff8ea; color: #90672f; border-color: #f0dfbd; }
+    .alert-error { background: #fff2f4; color: #a04861; border-color: #efd6dd; }
+    .alert-error ul { list-style: disc; padding-left: 18px; margin-top: 6px; }
+    .court-overview { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 22px; }
+    .court-summary { display: flex; gap: 15px; align-items: center; padding: 21px; }
+    .court-summary strong { display: block; font-size: 24px; font-weight: 600; }
+    .court-summary div > span { color: #93869f; font-size: 12px; }
+    .court-filters { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 18px; padding: 21px; }
+    .court-field { min-width: 0; }
+    .court-field > label { display: block; font-weight: 600; font-size: 12px; color: #73647f; margin-bottom: 8px; }
+    .court-input { display: block; width: 100%; border: 1px solid #e4ddec; border-radius: 8px; padding: 10px 12px; background-color: #fff; color: #4e405f; font-size: 13px; }
+    select.court-input { padding-right: 30px; }
+    .court-input:focus { border-color: #a787d1; --tw-ring-color: #a787d1; }
+    .court-input::placeholder { color: #b6aabe; }
+    .field-error { color: #ae4d67; font-size: 12px; margin-top: 7px; line-height: 1.6; }
+    .field-hint { color: #a394af; font-size: 11px; margin-top: 8px; line-height: 1.7; }
+    .court-result-label { display: flex; justify-content: space-between; color: #9c8eaa; font-size: 11px; margin: 20px 2px 14px; }
+    .court-list-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .court-list-card { overflow: hidden; display: flex; flex-direction: column; }
+    .court-card-image { height: 170px; position: relative; }
+    .court-card-image > img, .court-upload-preview > img { width: 100%; height: 100%; object-fit: cover; }
+    .court-image-placeholder { height: 100%; min-height: 170px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 13px; background: linear-gradient(130deg, #ebe2f6, #f5f1fb); color: #af96ce; }
+    .court-image-placeholder > .workspace-icon { width: 55px; height: 55px; transform: rotate(-12deg); }
+    .court-image-placeholder > span { font-size: 10px; color: #a38abf; }
+    .court-status { position: absolute; top: 13px; right: 13px; background: #f0ebf8; color: #8b73a7; border-radius: 6px; padding: 5px 9px; font-size: 10px; box-shadow: 0 2px 6px #291d4509; }
+    .court-status-active { background: #e7f6ed; color: #3b8863; }
+    .court-status-maintenance { background: #fff1dd; color: #b4823f; }
+    .court-card-body { padding: 20px; flex: 1; }
+    .court-card-sport { color: #a08bb5; font-size: 10px; }
+    .court-card-body h2 { font-weight: 600; font-size: 18px; margin-top: 7px; overflow-wrap: anywhere; }
+    .court-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .court-tags > span { background: #f8f6fb; border: 1px solid #eee8f4; color: #9887a8; padding: 3px 6px; border-radius: 5px; font-size: 10px; }
+    .court-card-hours { display: flex; align-items: center; gap: 6px; color: #9e8caf; font-size: 11px; margin-top: 16px; }
+    .court-card-hours .workspace-icon { width: 14px; height: 14px; }
+    .court-rate-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; border-top: 1px solid #f0eaf6; padding-top: 15px; margin-top: 17px; }
+    .court-rate-strip dt { color: #a99ab8; font-size: 9px; margin-bottom: 5px; }
+    .court-rate-strip dd { color: #795a96; font-size: 13px; font-weight: 600; }
+    .court-rate-strip small { font-size: 9px; font-weight: 400; color: #ad9bbd; }
+    .court-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 16px 20px; border-top: 1px solid #f0eaf6; }
+    .court-card-footer .text-link { font-size: 12px; }
+    .court-archive-button { color: #b08e9c; font-size: 11px; padding: 5px; border-radius: 5px; }
+    .court-archive-button:hover { color: #ab526a; background: #fff4f6; }
+    .court-archive-confirm { display: flex; justify-content: space-between; align-items: center; gap: 20px; background: #fff7f9; border: 1px solid #edd7e0; border-radius: 12px; margin-top: 20px; padding: 20px; color: #9c5970; }
+    .court-archive-confirm strong { font-size: 14px; }
+    .court-archive-confirm p { font-size: 12px; margin-top: 5px; }
+    .court-inline-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .court-empty { grid-column: 1 / -1; padding: 50px 25px; text-align: center; }
+    .court-empty > .stat-icon { width: 55px; height: 55px; margin-bottom: 18px; }
+    .court-empty h2 { font-size: 20px; font-weight: 600; }
+    .court-empty p { color: #9e8bab; font-size: 13px; line-height: 1.8; margin: 12px 0 20px; }
+    .court-pagination { margin-top: 25px; }
+    .court-back-link { display: inline-flex; font-size: 12px; color: #9a7cba; margin-bottom: 23px; }
+    .court-editor { display: grid; grid-template-columns: minmax(0, 2fr) minmax(240px, .85fr); gap: 22px; align-items: start; }
+    .court-editor-main { display: grid; gap: 22px; min-width: 0; }
+    .court-form-section { padding: 26px; }
+    .court-section-heading { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 25px; }
+    .court-section-heading h2 { font-size: 16px; font-weight: 600; }
+    .court-section-heading p { font-size: 12px; color: #9b87ab; line-height: 1.8; margin-top: 6px; }
+    .court-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 21px 18px; }
+    .field-wide { grid-column: 1 / -1; }
+    .court-feature-options { display: flex; gap: 12px; flex-wrap: wrap; }
+    .court-feature-options label { display: flex; gap: 8px; align-items: center; border: 1px solid #e9e0f2; border-radius: 8px; padding: 12px; font-size: 12px; color: #9b83ac; }
+    .court-feature-options input, .court-remove-image input { color: #9570c2; border-color: #d8c9e7; border-radius: 4px; }
+    .court-feature-options .workspace-icon { width: 16px; height: 16px; }
+    .court-week-tabs { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+    .court-day-button { padding: 10px 3px; text-align: center; border: 1px solid #e9e0f1; border-radius: 8px; font-size: 12px; color: #9c85ae; }
+    .court-day-button small { display: block; margin-top: 5px; font-size: 9px; opacity: .75; }
+    .court-day-button.is-selected { background: #8260b4; color: #fff; border-color: #8260b4; }
+    .court-hours-toolbar { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin: 24px 0 15px; }
+    .court-hours-toolbar h3 { font-size: 13px; font-weight: 600; }
+    .court-hours-toolbar > div { display: flex; gap: 12px; }
+    .court-hours-toolbar button { color: #a081bc; font-size: 11px; text-decoration: underline; text-underline-offset: 3px; }
+    .court-hour-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; }
+    .court-hour-option { position: relative; cursor: pointer; }
+    .court-hour-option input { position: absolute; opacity: 0; width: 100%; height: 100%; inset: 0; cursor: pointer; }
+    .court-hour-option > span { display: block; position: relative; pointer-events: none; border: 1px solid #ece5f3; padding: 10px 11px; border-radius: 8px; background: #fcfbfe; color: #aa98b8; font-size: 12px; }
+    .court-hour-option small { display: block; font-size: 9px; margin-top: 2px; opacity: .8; }
+    .court-hour-option .workspace-icon { display: none; position: absolute; top: 11px; right: 7px; width: 13px; height: 13px; }
+    .court-hour-option input:checked + span { background: #f0e8fa; border-color: #c7afe1; color: #8e64b6; }
+    .court-hour-option input:checked + span .workspace-icon { display: block; }
+    .court-hour-option input:focus-visible + span { outline: 3px solid #b49acf; outline-offset: 2px; }
+    .court-hours-footer { margin-top: 20px; border-top: 1px solid #f0eaf6; padding-top: 16px; }
+    .court-hours-footer p { font-size: 11px; color: #b09cbe; line-height: 1.8; margin-bottom: 9px; }
+    .court-hours-footer .text-link { font-size: 11px; }
+    .court-price-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .court-price-input { position: relative; }
+    .court-price-input input { padding-right: 40px; }
+    .court-price-input > span { position: absolute; right: 12px; top: 12px; font-size: 11px; color: #b198c4; }
+    .court-pricing-note { display: flex; gap: 9px; align-items: flex-start; margin-top: 22px; background: #f8f5fc; border-radius: 8px; color: #a28bb4; padding: 13px; }
+    .court-pricing-note .workspace-icon { width: 15px; height: 15px; margin-top: 3px; }
+    .court-pricing-note p { font-size: 11px; line-height: 1.9; }
+    .court-calculator { margin-top: 22px; border-top: 1px solid #eee7f5; padding-top: 22px; }
+    .court-calculator h3 { font-size: 14px; font-weight: 600; }
+    .court-calculator > p { font-size: 11px; color: #a98fba; line-height: 1.8; margin-top: 7px; }
+    .court-calculator-inputs { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: end; margin-top: 18px; }
+    .court-quote { display: flex; justify-content: space-between; gap: 14px; padding: 16px; background: #edf7f1; color: #698e77; border: 1px solid #deeee4; border-radius: 8px; font-size: 11px; margin-top: 17px; line-height: 1.7; }
+    .court-quote strong { display: block; font-size: 15px; margin-top: 4px; }
+    .court-upload-preview { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 10px; margin-bottom: 20px; background: #f5f0fb; }
+    .court-upload-preview .court-image-placeholder { min-height: 100%; }
+    .court-file-input { display: block; width: 100%; font-size: 11px; color: #a28caf; }
+    .court-file-input::file-selector-button { padding: 8px; border: 1px solid #e5d9ef; border-radius: 6px; margin-bottom: 6px; background: #f6f0fc; color: #9364b9; cursor: pointer; font-size: 11px; margin-right: 6px; }
+    .court-remove-image { display: flex; gap: 8px; align-items: center; margin-top: 16px; font-size: 11px; color: #ac8394; line-height: 1.6; }
+    .court-editor-help { padding: 25px 20px 0; color: #b09cc1; }
+    .court-editor-help .workspace-icon { width: 19px; height: 19px; margin-bottom: 10px; }
+    .court-editor-help h3 { font-size: 12px; color: #9179a2; font-weight: 600; }
+    .court-editor-help p { font-size: 11px; line-height: 1.9; margin-top: 7px; }
+    .court-save-bar { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 20px 23px; background: #fff; border: 1px solid #ece3f2; border-radius: 12px; }
+    .court-save-bar > p { color: #ad97ba; font-size: 11px; line-height: 1.8; }
+    .dashboard-courts-link { margin: 0 24px 22px; display: flex; gap: 13px; align-items: center; padding: 19px; border: 1px solid #dfd0f0; border-radius: 10px; background: #faf7fe; color: #8e6ab2; }
+    .dashboard-courts-link > span:nth-child(2) { flex: 1; }
+    .dashboard-courts-link strong { font-size: 13px; }
+    .dashboard-courts-link small { display: block; font-size: 11px; margin-top: 6px; line-height: 1.7; color: #b19ac3; }
+    @media (max-width: 1279px) {
+        .court-list-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .court-editor { grid-template-columns: minmax(0, 1fr); }
+        .court-editor-side { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .court-editor-side > section { grid-row: span 2; }
+        .court-editor-help { padding: 15px 5px; }
+    }
+    @media (max-width: 639px) {
+        .court-overview { gap: 8px; }
+        .court-summary { padding: 13px 10px; gap: 10px; flex-direction: column; align-items: flex-start; }
+        .court-summary strong { font-size: 22px; }
+        .court-summary div > span { font-size: 10px; }
+        .court-filters { grid-template-columns: 1fr 1fr; padding: 16px; gap: 14px; }
+        .court-filters > :first-child { grid-column: 1 / -1; }
+        .court-list-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+        .court-archive-confirm { flex-direction: column; align-items: stretch; }
+        .court-form-section { padding: 19px 16px; }
+        .court-editor { gap: 18px; }
+        .court-editor-side { display: block; }
+        .court-editor-side .court-form-section { max-width: none; }
+        .court-editor-help { padding: 20px 10px 0; }
+        .court-form-grid { gap: 17px 12px; }
+        .court-hour-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .court-day-button { font-size: 10px; padding: 10px 2px; }
+        .court-week-tabs { gap: 4px; }
+        .court-hours-toolbar > div { gap: 10px; }
+        .court-hours-toolbar button { font-size: 10px; }
+        .court-price-grid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+        .court-calculator-inputs { grid-template-columns: 1fr 1fr; }
+        .court-calculator-inputs > button { grid-column: 1 / -1; }
+        .court-save-bar { flex-direction: column; align-items: stretch; padding: 18px; }
+        .court-save-bar .court-inline-actions { justify-content: flex-end; }
+        .court-quote { flex-direction: column; }
+        .dashboard-intro:has(.court-primary) { flex-wrap: wrap; }
+        .dashboard-courts-link { margin-left: 18px; margin-right: 18px; padding: 14px; }
+    }
+
     .workspace {
         --workspace-purple: #7552d5;
         --workspace-ink: #29263c;

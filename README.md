@@ -30,11 +30,9 @@ puede repetir sin duplicar usuarios ni roles, sin restablecer contrasenas o dato
 personales existentes y sin eliminar otros roles. Los usuarios nuevos se crean
 con el correo verificado.
 
-Este seeder solo prepara las cuentas y sus roles: no implementa los paneles
-protegidos, las redirecciones ni las reservas. El administrador no es un
-`super-admin`; su asignacion a una empresa queda pendiente de incorporar el modelo
-`Company` y `company_id`. El cliente tendra su area personal de reservas y perfil,
-separada del mantenimiento de instalaciones.
+El administrador no es un `super-admin`. `UserSeeder` llama a `ClubCompanySeeder`
+para asociar al administrador de pruebas con `Club VAED` si no tiene empresa.
+No modifica una empresa ya asignada ni vincula al cliente con ninguna empresa.
 
 ## Paneles privados
 
@@ -48,10 +46,66 @@ Ambos paneles requieren autenticacion. Los clientes reciben un 403 si intentan
 abrir `/admin`. El perfil, la contrasena, el doble factor y la gestion de sesiones
 siguen utilizando los componentes de Jetstream en `/user/profile`.
 
-Las secciones de instalaciones, reservas, horarios y tarifas estan identificadas
-como proximamente: no hay datos ni estadisticas simuladas. La web publica no se
-modifica. Para compilar el nuevo diseño: `npm run build`. Al desplegar, subir
-tambien `public/build` y regenerar las caches de rutas y vistas.
+El mantenimiento de instalaciones esta disponible; las reservas publicas siguen
+pendientes. No hay datos ni estadisticas simuladas. La web publica no se modifica.
+Para compilar el diseño: `npm run build`. Al desplegar, subir tambien
+`public/build` y regenerar las caches de configuracion, rutas y vistas.
+
+## Mantenimiento de pistas (Livewire)
+
+En `/admin/pistas` se pueden buscar y filtrar pistas, crearlas, editarlas,
+archivarlas y recuperarlas. El archivo no elimina sus horarios, tarifas ni imagen.
+El administrador de empresa solo consulta y modifica sus propias pistas, incluidas
+las acciones Livewire. El superadministrador ve todas las empresas y selecciona
+la propietaria al crear; editar una pista no permite cambiarla de empresa.
+Una cuenta administradora sin empresa puede ver un aviso, pero no crear pistas.
+
+Cada pista tiene nombre, deporte, tipo (exterior, cubierta o semicubierta),
+superficie, cerramiento, aforo, iluminacion, acceso adaptado, descripcion y estado.
+Los catalogos se encuentran en `config/courts.php`. Imagen opcional JPG, PNG o
+WebP de hasta 5 MB y 6000 x 6000 px, almacenada en el disco publico. Al sustituirla
+o retirarla se elimina la anterior; los fallos de limpieza se registran y notifican.
+
+### Horario semanal y precios
+
+- Cada dia contiene 24 franjas completas: 00:00-01:00 hasta 23:00-24:00.
+- Solo las marcadas son alquilables. Se puede marcar/limpiar un dia y copiarlo a
+  la semana. Una pista activa requiere al menos una franja.
+- Tres precios finales por hora en EUR: 1 hora, 2 horas y 3 o mas horas por dia.
+  Se permiten tarifas gratuitas (0); maximo 9999,99 EUR/h y dos decimales.
+- Se acumulan las horas del **mismo cliente, pista y fecha**, aunque no sean
+  consecutivas. La tarifa del tramo alcanzado se aplica a todas las horas del dia.
+  Con 20/18/16 EUR/h, los totales son 20, 36, 48 y 64 EUR para 1/2/3/4 horas.
+- `CourtPricingService` trabaja en centimos. `quote` devuelve horas, tarifa
+  unitaria, total diario y ajuste respecto a lo ya cobrado. Si el cliente ya pago
+  20 EUR y añade una segunda hora, el ajuste es 16 EUR. Un ajuste negativo es
+  saldo a devolver, nunca se oculta.
+- El simulador del formulario no consulta reservas ni cobra: valora las horas
+  anteriores con las tarifas del formulario. El futuro servicio de reservas
+  debera agrupar solo reservas vigentes del cliente/pista/fecha, descontar importes
+  reales ya cobrados y aplicar disponibilidad, bloqueos, concurrencia y reembolsos.
+  Estas operaciones no forman parte de este mantenimiento.
+
+Las altas y cambios de horario son transaccionales. Un contador de version evita
+sobrescribir ediciones concurrentes: si aparece el aviso de conflicto, recarga el
+formulario antes de volver a editar.
+
+### Despliegue
+
+Con los archivos subidos y antes de habilitar las rutas nuevas:
+
+```sh
+php artisan migrate --force
+php artisan db:seed --class=ClubCompanySeeder --force
+php artisan storage:link
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+El seeder de empresa requiere el administrador de pruebas existente. No ejecuta
+un reseteo ni cambia contrasenas. El servidor web debe poder escribir en
+`storage` y leer `public/storage`. No subir `public/hot`.
 
 ## About Laravel
 

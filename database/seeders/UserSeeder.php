@@ -44,5 +44,7 @@ class UserSeeder extends Seeder
                 $user->assignRole(Role::findOrCreate($account['role'], 'web'));
             }
         });
+
+        $this->call(ClubCompanySeeder::class);
     }
 }

@@ -58,15 +58,13 @@
         <section class="workspace-card dashboard-primary">
             <div class="card-heading">
                 <div><h2>{{ $isAdmin ? 'Tu centro de operaciones' : 'Mis reservas' }}</h2><p>{{ $isAdmin ? 'Una nueva forma de gestionar tus instalaciones.' : 'Tus próximos planes deportivos, en un solo lugar.' }}</p></div>
-                <span class="workspace-badge badge-purple">Próximamente</span>
+                <span class="workspace-badge badge-purple">{{ $isAdmin ? 'Tu club' : 'Próximamente' }}</span>
             </div>
             @if ($isAdmin)
+                <a href="{{ route('admin.courts.index') }}" class="dashboard-courts-link"><span class="stat-icon icon-purple"><x-workspace-icon name="court" /></span><span><strong>Gestionar instalaciones</strong><small>Crea pistas y configura sus características, horarios y tarifas.</small></span><x-workspace-icon name="arrow" /></a>
                 <div class="module-grid">
                     @foreach ([
-                        ['court', 'Instalaciones', 'Pistas y espacios deportivos.', 'icon-purple'],
                         ['calendar', 'Reservas', 'La agenda de tu instalación.', 'icon-mint'],
-                        ['clock', 'Horarios', 'Aperturas y franjas de juego.', 'icon-blue'],
-                        ['wallet', 'Tarifas', 'Precios para cada momento.', 'icon-peach'],
                     ] as [$icon, $title, $description, $color])
                         <div class="module-preview">
                             <span class="stat-icon {{ $color }}"><x-workspace-icon :name="$icon" /></span>
@@ -75,7 +73,7 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="card-notice"><x-workspace-icon name="clock" /><p>Los módulos de mantenimiento todavía no están disponibles. Aquí aparecerán los datos de tu instalación cuando estén conectados.</p></div>
+                <div class="card-notice"><x-workspace-icon name="clock" /><p>El mantenimiento de pistas, horarios y tarifas ya está disponible. El módulo de reservas se incorporará próximamente.</p></div>
             @else
                 <div class="booking-empty">
                     <div class="empty-illustration" aria-hidden="true"><x-workspace-icon name="calendar" /><span><x-workspace-icon name="ball" /></span></div>

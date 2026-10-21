@@ -4,7 +4,7 @@
     $onDashboard = request()->routeIs('admin.dashboard', 'customer.dashboard');
     $roleLabel = auth()->user()->hasRole('super-admin') ? 'Superadministración' : ($isAdmin ? 'Administración' : 'Área personal');
     $upcoming = $isAdmin
-        ? [['court', 'Instalaciones'], ['calendar', 'Reservas'], ['clock', 'Horarios'], ['wallet', 'Tarifas']]
+        ? [['calendar', 'Reservas']]
         : [['calendar', 'Mis reservas'], ['court', 'Explorar pistas']];
 @endphp
 
@@ -31,6 +31,11 @@
             <a href="{{ route($homeRoute) }}" @class(['sidebar-link', 'is-active' => $onDashboard]) @if($onDashboard) aria-current="page" @endif>
                 <x-workspace-icon name="grid" /><span>Vista general</span>
             </a>
+            @if($isAdmin)
+                <a href="{{ route('admin.courts.index') }}" @class(['sidebar-link', 'is-active' => request()->routeIs('admin.courts.*')]) @if(request()->routeIs('admin.courts.*')) aria-current="page" @endif>
+                    <x-workspace-icon name="court" /><span>Instalaciones</span>
+                </a>
+            @endif
             @foreach ($upcoming as [$icon, $label])
                 <span class="sidebar-link is-disabled" aria-disabled="true" title="Esta sección estará disponible próximamente">
                     <x-workspace-icon :name="$icon" /><span>{{ $label }}</span><small>Pronto</small>
@@ -73,7 +78,7 @@
             <span class="topbar-app-icon"><x-workspace-icon name="grid" /></span>
             <span class="topbar-section">{{ $roleLabel }}</span>
             <span class="topbar-divider">/</span>
-            <span class="topbar-current">{{ $onDashboard ? 'Vista general' : (request()->routeIs('profile.show') ? 'Mi perfil' : 'Mi cuenta') }}</span>
+            <span class="topbar-current">{{ $onDashboard ? 'Vista general' : (request()->routeIs('admin.courts.*') ? 'Instalaciones' : (request()->routeIs('profile.show') ? 'Mi perfil' : 'Mi cuenta')) }}</span>
         </div>
         <div class="topbar-actions">
             <a href="{{ url('/') }}" class="topbar-public">Ir a la web <x-workspace-icon name="external" /></a>
