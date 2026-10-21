@@ -36,6 +36,23 @@ protegidos, las redirecciones ni las reservas. El administrador no es un
 `Company` y `company_id`. El cliente tendra su area personal de reservas y perfil,
 separada del mantenimiento de instalaciones.
 
+## Paneles privados
+
+La interfaz privada utiliza una barra lateral morada, tarjetas y navegacion
+responsive. `/dashboard` redirige segun el rol:
+
+- `company-admin` y `super-admin`: `/admin`, panel de gestion.
+- Clientes y cuentas sin rol: `/mi-cuenta`, area personal.
+
+Ambos paneles requieren autenticacion. Los clientes reciben un 403 si intentan
+abrir `/admin`. El perfil, la contrasena, el doble factor y la gestion de sesiones
+siguen utilizando los componentes de Jetstream en `/user/profile`.
+
+Las secciones de instalaciones, reservas, horarios y tarifas estan identificadas
+como proximamente: no hay datos ni estadisticas simuladas. La web publica no se
+modifica. Para compilar el nuevo diseño: `npm run build`. Al desplegar, subir
+tambien `public/build` y regenerar las caches de rutas y vistas.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

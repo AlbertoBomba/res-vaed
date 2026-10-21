@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
+        <p class="workspace-eyebrow">A TU MEDIDA</p>
+        <h1>Tu perfil, tu espacio<span class="greeting-dot">.</span></h1>
+        <p class="profile-intro">Mantén tus datos al día y cuida la seguridad de tu cuenta.</p>
     </x-slot>
 
-    <div>
-        <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+    <div class="profile-workspace">
+        <div>
             @if (Laravel\Fortify\Features::canUpdateProfileInformation())
                 @livewire('profile.update-profile-information-form')
 
@@ -14,7 +14,7 @@
             @endif
 
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
-                <div class="mt-10 sm:mt-0">
+                <div id="account-security" class="mt-10 sm:mt-0 scroll-mt-24">
                     @livewire('profile.update-password-form')
                 </div>
 

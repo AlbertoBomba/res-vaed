@@ -24,6 +24,11 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    public function isAdministrator(): bool
+    {
+        return $this->hasAnyRole(['company-admin', 'super-admin']);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

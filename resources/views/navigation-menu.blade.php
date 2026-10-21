@@ -1,219 +1,107 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-mark class="block h-9 w-auto" />
-                    </a>
-                </div>
+@php
+    $isAdmin = auth()->user()->isAdministrator();
+    $homeRoute = $isAdmin ? 'admin.dashboard' : 'customer.dashboard';
+    $onDashboard = request()->routeIs('admin.dashboard', 'customer.dashboard');
+    $roleLabel = auth()->user()->hasRole('super-admin') ? 'Superadministración' : ($isAdmin ? 'Administración' : 'Área personal');
+    $upcoming = $isAdmin
+        ? [['court', 'Instalaciones'], ['calendar', 'Reservas'], ['clock', 'Horarios'], ['wallet', 'Tarifas']]
+        : [['calendar', 'Mis reservas'], ['court', 'Explorar pistas']];
+@endphp
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
-            </div>
+<div>
+    <div x-cloak x-show="sidebarOpen" x-transition.opacity class="workspace-overlay" @click="sidebarOpen = false" aria-hidden="true"></div>
 
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <!-- Teams Dropdown -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                    <div class="ms-3 relative">
-                        <x-dropdown align="right" width="60">
-                            <x-slot name="trigger">
-                                <span class="inline-flex rounded-md">
-                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
-                                        {{ Auth::user()->currentTeam->name }}
+    <aside id="workspace-sidebar" class="workspace-sidebar" :class="{ 'is-open': sidebarOpen }" x-trap.inert.noscroll="sidebarOpen" aria-label="Menú principal">
+        <a href="{{ route($homeRoute) }}" class="workspace-brand" aria-label="VAED - Inicio">
+            <span class="brand-symbol"><x-workspace-icon name="court" /></span>
+            <span><strong>vaed<span class="text-violet-300">.</span></strong><small>sport & community</small></span>
+        </a>
+        <button type="button" class="sidebar-close icon-button" @click="sidebarOpen = false" aria-label="Cerrar menú">
+            <x-workspace-icon name="close" />
+        </button>
 
-                                        <svg class="ms-2 -me-0.5 size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                        </svg>
-                                    </button>
-                                </span>
-                            </x-slot>
-
-                            <x-slot name="content">
-                                <div class="w-60">
-                                    <!-- Team Management -->
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Manage Team') }}
-                                    </div>
-
-                                    <!-- Team Settings -->
-                                    <x-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
-                                        {{ __('Team Settings') }}
-                                    </x-dropdown-link>
-
-                                    @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                                        <x-dropdown-link href="{{ route('teams.create') }}">
-                                            {{ __('Create New Team') }}
-                                        </x-dropdown-link>
-                                    @endcan
-
-                                    <!-- Team Switcher -->
-                                    @if (Auth::user()->allTeams()->count() > 1)
-                                        <div class="border-t border-gray-200"></div>
-
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            {{ __('Switch Teams') }}
-                                        </div>
-
-                                        @foreach (Auth::user()->allTeams() as $team)
-                                            <x-switchable-team :team="$team" />
-                                        @endforeach
-                                    @endif
-                                </div>
-                            </x-slot>
-                        </x-dropdown>
-                    </div>
-                @endif
-
-                <!-- Settings Dropdown -->
-                <div class="ms-3 relative">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                    <img class="size-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                                </button>
-                            @else
-                                <span class="inline-flex rounded-md">
-                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
-                                        {{ Auth::user()->name }}
-
-                                        <svg class="ms-2 -me-0.5 size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                        </svg>
-                                    </button>
-                                </span>
-                            @endif
-                        </x-slot>
-
-                        <x-slot name="content">
-                            <!-- Account Management -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Manage Account') }}
-                            </div>
-
-                            <x-dropdown-link href="{{ route('profile.show') }}">
-                                {{ __('Profile') }}
-                            </x-dropdown-link>
-
-                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                                <x-dropdown-link href="{{ route('api-tokens.index') }}">
-                                    {{ __('API Tokens') }}
-                                </x-dropdown-link>
-                            @endif
-
-                            <div class="border-t border-gray-200"></div>
-
-                            <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}" x-data>
-                                @csrf
-
-                                <x-dropdown-link href="{{ route('logout') }}"
-                                         @click.prevent="$root.submit();">
-                                    {{ __('Log Out') }}
-                                </x-dropdown-link>
-                            </form>
-                        </x-slot>
-                    </x-dropdown>
-                </div>
-            </div>
-
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    <svg class="size-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+        <div class="sidebar-space">
+            <span class="space-symbol"><x-workspace-icon :name="$isAdmin ? 'court' : 'ball'" /></span>
+            <div><strong>{{ $isAdmin ? 'Gestión deportiva' : 'Mi espacio deportivo' }}</strong><small>{{ $roleLabel }}</small></div>
+            <span class="status-dot"></span>
         </div>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="flex items-center px-4">
-                @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                    <div class="shrink-0 me-3">
-                        <img class="size-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                    </div>
-                @endif
+        <nav class="sidebar-navigation" aria-label="Navegación">
+            <p class="sidebar-label">TU ESPACIO</p>
+            <a href="{{ route($homeRoute) }}" @class(['sidebar-link', 'is-active' => $onDashboard]) @if($onDashboard) aria-current="page" @endif>
+                <x-workspace-icon name="grid" /><span>Vista general</span>
+            </a>
+            @foreach ($upcoming as [$icon, $label])
+                <span class="sidebar-link is-disabled" aria-disabled="true" title="Esta sección estará disponible próximamente">
+                    <x-workspace-icon :name="$icon" /><span>{{ $label }}</span><small>Pronto</small>
+                </span>
+            @endforeach
 
-                <div>
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-                </div>
+            <p class="sidebar-label sidebar-label-spaced">MI CUENTA</p>
+            <a href="{{ route('profile.show') }}" @class(['sidebar-link', 'is-active' => request()->routeIs('profile.show')]) @if(request()->routeIs('profile.show')) aria-current="page" @endif>
+                <x-workspace-icon name="user" /><span>Perfil y seguridad</span>
+            </a>
+            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                <a href="{{ route('api-tokens.index') }}" @class(['sidebar-link', 'is-active' => request()->routeIs('api-tokens.*')])>
+                    <x-workspace-icon name="key" /><span>Tokens API</span>
+                </a>
+            @endif
+            <a href="{{ url('/') }}" class="sidebar-link">
+                <x-workspace-icon name="external" /><span>Web pública</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-note">
+                <span class="sidebar-note-icon"><x-workspace-icon name="sparkles" /></span>
+                <strong>{{ $isAdmin ? 'Más club. Menos gestión.' : 'Tu tiempo, tu deporte.' }}</strong>
+                <p>{{ $isAdmin ? 'Un espacio pensado para cuidar cada detalle de tu instalación.' : 'Todo lo que necesitas para disfrutar de tu próximo partido.' }}</p>
             </div>
-
-            <div class="mt-3 space-y-1">
-                <!-- Account Management -->
-                <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                    <x-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
-                        {{ __('API Tokens') }}
-                    </x-responsive-nav-link>
-                @endif
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}" x-data>
-                    @csrf
-
-                    <x-responsive-nav-link href="{{ route('logout') }}"
-                                   @click.prevent="$root.submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-
-                <!-- Team Management -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                    <div class="border-t border-gray-200"></div>
-
-                    <div class="block px-4 py-2 text-xs text-gray-400">
-                        {{ __('Manage Team') }}
-                    </div>
-
-                    <!-- Team Settings -->
-                    <x-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}" :active="request()->routeIs('teams.show')">
-                        {{ __('Team Settings') }}
-                    </x-responsive-nav-link>
-
-                    @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                        <x-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
-                            {{ __('Create New Team') }}
-                        </x-responsive-nav-link>
-                    @endcan
-
-                    <!-- Team Switcher -->
-                    @if (Auth::user()->allTeams()->count() > 1)
-                        <div class="border-t border-gray-200"></div>
-
-                        <div class="block px-4 py-2 text-xs text-gray-400">
-                            {{ __('Switch Teams') }}
-                        </div>
-
-                        @foreach (Auth::user()->allTeams() as $team)
-                            <x-switchable-team :team="$team" component="responsive-nav-link" />
-                        @endforeach
-                    @endif
-                @endif
-            </div>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="sidebar-link sidebar-logout"><x-workspace-icon name="logout" /><span>Cerrar sesión</span></button>
+            </form>
+            <div class="sidebar-footer"><span class="status-dot"></span> VAED · Hecho para el deporte</div>
         </div>
-    </div>
-</nav>
+    </aside>
+
+    <header class="workspace-topbar">
+        <div class="topbar-location">
+            <button type="button" class="icon-button mobile-menu-toggle" @click="sidebarOpen = true" :aria-expanded="sidebarOpen.toString()" aria-controls="workspace-sidebar" aria-label="Abrir menú">
+                <x-workspace-icon name="menu" />
+            </button>
+            <span class="topbar-app-icon"><x-workspace-icon name="grid" /></span>
+            <span class="topbar-section">{{ $roleLabel }}</span>
+            <span class="topbar-divider">/</span>
+            <span class="topbar-current">{{ $onDashboard ? 'Vista general' : (request()->routeIs('profile.show') ? 'Mi perfil' : 'Mi cuenta') }}</span>
+        </div>
+        <div class="topbar-actions">
+            <a href="{{ url('/') }}" class="topbar-public">Ir a la web <x-workspace-icon name="external" /></a>
+            <span class="topbar-separator"></span>
+            <x-dropdown align="right" width="60">
+                <x-slot name="trigger">
+                    <button type="button" class="account-trigger" @keydown.escape.stop="open = false" aria-label="Abrir menú de cuenta" :aria-expanded="open.toString()" aria-haspopup="true">
+                        @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                            <img class="account-avatar object-cover" src="{{ auth()->user()->profile_photo_url }}" alt="" />
+                        @else
+                            <span class="account-avatar">{{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}</span>
+                        @endif
+                        <span class="account-name"><strong>{{ auth()->user()->name }}</strong><small>{{ $roleLabel }}</small></span>
+                        <x-workspace-icon name="chevron" />
+                    </button>
+                </x-slot>
+                <x-slot name="content">
+                    <div class="px-4 py-3 border-b border-slate-100">
+                        <p class="text-xs text-slate-500">Sesión iniciada como</p>
+                        <p class="mt-1 text-sm font-medium text-slate-800 break-all">{{ auth()->user()->email }}</p>
+                    </div>
+                    <x-dropdown-link href="{{ route('profile.show') }}">Mi perfil y seguridad</x-dropdown-link>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="block w-full px-4 py-2 text-start text-sm text-rose-600 hover:bg-rose-50">Cerrar sesión</button>
+                    </form>
+                </x-slot>
+            </x-dropdown>
+        </div>
+    </header>
+</div>
