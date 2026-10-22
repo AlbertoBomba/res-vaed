@@ -5,7 +5,7 @@
     $roleLabel = auth()->user()->hasRole('super-admin') ? 'Superadministración' : ($isAdmin ? 'Administración' : 'Área personal');
     $upcoming = $isAdmin
         ? [['calendar', 'Reservas']]
-        : [['calendar', 'Mis reservas'], ['court', 'Explorar pistas']];
+        : [];
 @endphp
 
 <div>
@@ -36,6 +36,10 @@
                     <x-workspace-icon name="court" /><span>Instalaciones</span>
                 </a>
             @endif
+            @unless($isAdmin)
+                <a href="{{ route('bookings.index') }}" class="sidebar-link"><x-workspace-icon name="calendar" /><span>Mis reservas</span></a>
+                <a href="{{ route('courts.index') }}" class="sidebar-link"><x-workspace-icon name="court" /><span>Explorar pistas</span></a>
+            @endunless
             @foreach ($upcoming as [$icon, $label])
                 <span class="sidebar-link is-disabled" aria-disabled="true" title="Esta sección estará disponible próximamente">
                     <x-workspace-icon :name="$icon" /><span>{{ $label }}</span><small>Pronto</small>

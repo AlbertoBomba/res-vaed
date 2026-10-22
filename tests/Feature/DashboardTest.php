@@ -47,7 +47,8 @@ class DashboardTest extends TestCase
             ->assertOk()
             ->assertSee('Menos pantallas. Más partidos.')
             ->assertSee('Mis reservas')
-            ->assertSee('Próximamente')
+            ->assertSee('Reservar pista')
+            ->assertSee(route('bookings.index'))
             ->assertDontSee('Tu centro de operaciones')
             ->assertDontSee('admin@example.com');
         $this->get(route('admin.dashboard'))->assertForbidden();

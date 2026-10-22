@@ -58,7 +58,7 @@
         <section class="workspace-card dashboard-primary">
             <div class="card-heading">
                 <div><h2>{{ $isAdmin ? 'Tu centro de operaciones' : 'Mis reservas' }}</h2><p>{{ $isAdmin ? 'Una nueva forma de gestionar tus instalaciones.' : 'Tus próximos planes deportivos, en un solo lugar.' }}</p></div>
-                <span class="workspace-badge badge-purple">{{ $isAdmin ? 'Tu club' : 'Próximamente' }}</span>
+                <span class="workspace-badge badge-purple">{{ $isAdmin ? 'Tu club' : 'Tu agenda' }}</span>
             </div>
             @if ($isAdmin)
                 <a href="{{ route('admin.courts.index') }}" class="dashboard-courts-link"><span class="stat-icon icon-purple"><x-workspace-icon name="court" /></span><span><strong>Gestionar instalaciones</strong><small>Crea pistas y configura sus características, horarios y tarifas.</small></span><x-workspace-icon name="arrow" /></a>
@@ -78,8 +78,9 @@
                 <div class="booking-empty">
                     <div class="empty-illustration" aria-hidden="true"><x-workspace-icon name="calendar" /><span><x-workspace-icon name="ball" /></span></div>
                     <h3>Lo mejor está por jugar.</h3>
-                    <p>Estamos preparando el sistema de reservas. Cuando esté disponible, aquí podrás consultar tus partidos y gestionar tus próximas citas con el deporte.</p>
-                    <span class="empty-caption"><span class="status-dot"></span> El juego está a punto de empezar</span>
+                    <p>Encuentra una pista libre para tu próximo partido o consulta las reservas que ya has confirmado.</p>
+                    <a href="{{ route('courts.index') }}" class="workspace-button court-primary">Reservar pista</a>
+                    <a href="{{ route('bookings.index') }}" class="text-link">Ver mis reservas</a>
                 </div>
             @endif
         </section>

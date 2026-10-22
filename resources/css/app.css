@@ -7,6 +7,96 @@
 }
 
 @layer components {
+    .public-booking { background: #faf8fd; color: #4e405f; font-family: Figtree, ui-sans-serif, system-ui, sans-serif; }
+    .public-header, .public-main, .public-footer { max-width: 1220px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+    .public-header { display: flex; align-items: center; justify-content: space-between; gap: 25px; min-height: 105px; border-bottom: 1px solid #eee7f4; }
+    .public-brand { display: flex; gap: 12px; align-items: center; color: #63488b; font-size: 34px; font-weight: 750; letter-spacing: -2px; line-height: 1; }
+    .public-brand > .workspace-icon { width: 43px; height: 43px; padding: 9px; background: #eae1f5; border-radius: 12px; }
+    .public-brand small { display: block; font-size: 9px; letter-spacing: 1px; font-weight: 400; margin-top: 7px; }
+    .public-navigation { display: flex; gap: 25px; align-items: center; font-size: 12px; flex-wrap: wrap; }
+    .public-navigation a[aria-current], .public-navigation a:hover { color: #7954b3; }
+    .public-main { padding-top: 32px; padding-bottom: 55px; min-height: 70vh; }
+    .public-hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 45px; align-items: center; padding: 32px 0 70px; }
+    .public-hero h1 { font-size: clamp(40px, 5.5vw, 68px); letter-spacing: -3px; font-weight: 650; line-height: 1.08; margin: 20px 0; }
+    .public-hero h1 span { color: #9270bd; }
+    .public-hero p:not(.workspace-eyebrow) { max-width: 390px; font-size: 14px; line-height: 1.9; color: #9583a5; margin-bottom: 25px; }
+    .public-hero-art { position: relative; height: 320px; border-radius: 90px 24px 90px 24px; background: #eee7f7; overflow: hidden; }
+    .public-hero-art > span { position: absolute; bottom: 24px; left: 30px; font-size: 10px; letter-spacing: 4px; color: #9b82b8; }
+    .public-court-lines { position: absolute; width: 225px; height: 280px; border: 3px solid #fff; border-radius: 5px; transform: rotate(25deg); right: 45px; top: -15px; background: #d9c9ed; box-shadow: 0 20px 45px #9474bc26; }
+    .public-court-lines::before { content: ''; position: absolute; inset: 40px 0; border-top: 2px solid #fff; border-bottom: 2px solid #fff; }
+    .public-court-lines::after { content: ''; position: absolute; inset: 0 30px; border-left: 2px solid #fff; border-right: 2px solid #fff; }
+    .public-court-lines > span { position: absolute; top: 50%; width: 100%; border-top: 3px solid white; }
+    .public-ball { position: absolute; width: 68px; height: 68px; background: #dce9b9; border-radius: 50%; bottom: 45px; right: 25px; box-shadow: 0 10px 16px #8060a72b; border: 2px solid #edf5d6; }
+    .public-section-heading { display: flex; align-items: end; justify-content: space-between; gap: 25px; margin: 20px 0 25px; }
+    .public-section-heading h1, .public-section-heading h2 { font-size: 30px; font-weight: 600; letter-spacing: -1px; margin-top: 8px; }
+    .public-section-heading > p { color: #9b89aa; font-size: 12px; max-width: 260px; line-height: 1.8; }
+    .public-filters { display: grid; grid-template-columns: 1.3fr 1.2fr 1.1fr .8fr auto; align-items: end; gap: 16px; padding: 22px; }
+    .public-filters > button { min-height: 41px; justify-content: center; }
+    .public-court-name { font-size: 19px; font-weight: 600; margin-top: 6px; }
+    .public-court-description { color: #9986a8; font-size: 12px; line-height: 1.8; margin-top: 14px; white-space: pre-line; overflow-wrap: anywhere; }
+    .public-price { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; margin-top: 22px; padding-top: 16px; border-top: 1px solid #eee7f4; }
+    .public-price strong { font-size: 23px; font-weight: 650; color: #7954b3; }
+    .public-price > span { font-size: 10px; color: #a08bad; }
+    .public-slot-label { font-size: 11px; margin: 18px 0 10px; color: #8a749d; }
+    .public-slots { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; }
+    .public-slots a { border: 1px solid #e5d9f1; color: #7954b3; background: #faf7fe; border-radius: 7px; padding: 9px 2px; text-align: center; font-size: 12px; }
+    .public-slots a:hover { background: #7954b3; color: white; }
+    .public-no-slots { font-size: 12px; line-height: 1.8; background: #f8f4fc; color: #9983aa; padding: 14px; margin-top: 20px; border-radius: 8px; }
+    .public-pricing-note { font-size: 11px; line-height: 1.9; color: #9a88a8; margin: 22px 0; }
+    .public-how { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; border-top: 1px solid #e9e1f2; margin-top: 45px; padding: 40px 0 10px; }
+    .public-how span { color: #bfa7d5; font-size: 13px; }
+    .public-how h2 { font-size: 16px; margin: 10px 0; font-weight: 600; }
+    .public-how p { font-size: 12px; color: #9b88ab; line-height: 1.8; }
+    .public-footer { display: flex; justify-content: space-between; padding-top: 25px; padding-bottom: 25px; font-size: 11px; color: #a692b6; border-top: 1px solid #eee7f4; }
+    .public-confirm { max-width: 650px; padding: 38px; margin: 0 auto 30px; }
+    .public-confirm h1 { font-size: 34px; font-weight: 600; margin: 14px 0 22px; letter-spacing: -1px; }
+    .public-confirm h2 { font-size: 24px; font-weight: 600; margin-top: 6px; }
+    .public-confirm-club { font-size: 12px; color: #a08aad; }
+    .public-booking-details { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 28px 0; padding: 24px 0; border-top: 1px solid #eee7f4; border-bottom: 1px solid #eee7f4; }
+    .public-booking-details dt { font-size: 11px; color: #a08aad; margin-bottom: 6px; }
+    .public-booking-details dd { font-size: 14px; overflow-wrap: anywhere; }
+    .public-confirm-price { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; }
+    .public-confirm-price span { font-size: 13px; }
+    .public-confirm-price strong { color: #7954b3; font-size: 29px; font-weight: 650; white-space: nowrap; }
+    .public-confirm-button { width: 100%; justify-content: center; }
+    .public-booking-list { display: grid; gap: 16px; }
+    .public-booking-row { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 26px; }
+    .public-booking-row h2 { font-size: 21px; font-weight: 600; margin: 7px 0; }
+    .public-booking-row p { font-size: 13px; color: #9884a8; }
+    .public-booking-row-end { display: grid; justify-items: end; gap: 12px; flex-shrink: 0; }
+    .public-booking-row-end strong { color: #7954b3; font-size: 20px; }
+    .public-booking-row-end small { font-size: 10px; color: #9983aa; }
+    .public-booking a:focus-visible, .public-booking button:focus-visible { outline: 2px solid #7954b3; outline-offset: 4px; }
+    @media (max-width: 1000px) {
+        .public-filters { grid-template-columns: 1fr 1fr; }
+        .public-filters > button { grid-column: 1 / -1; }
+        .public-booking .court-list-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .public-navigation { gap: 16px; }
+    }
+    @media (max-width: 640px) {
+        .public-header, .public-main, .public-footer { padding-left: 20px; padding-right: 20px; }
+        .public-header { flex-direction: column; align-items: start; padding-top: 22px; padding-bottom: 20px; gap: 20px; }
+        .public-navigation { gap: 14px; font-size: 11px; }
+        .public-navigation .workspace-button { padding: 8px 12px; }
+        .public-hero { grid-template-columns: 1fr; padding-top: 5px; padding-bottom: 30px; gap: 26px; }
+        .public-hero h1 { letter-spacing: -2px; }
+        .public-hero-art { height: 180px; border-radius: 50px 18px; }
+        .public-court-lines { height: 220px; width: 160px; right: 55px; top: -55px; }
+        .public-section-heading { align-items: start; flex-direction: column; gap: 14px; }
+        .public-section-heading h1, .public-section-heading h2 { font-size: 26px; }
+        .public-section-heading > p { max-width: none; }
+        .public-filters { gap: 14px 10px; padding: 16px; }
+        .public-booking .court-list-grid { grid-template-columns: 1fr; }
+        .public-how { grid-template-columns: 1fr; gap: 24px; }
+        .public-confirm { padding: 24px; }
+        .public-confirm h1 { font-size: 28px; }
+        .public-confirm-price { flex-wrap: wrap; gap: 8px; }
+        .public-booking-row { flex-direction: column; align-items: start; padding: 22px; }
+        .public-booking-row-end { justify-items: start; }
+    }
+}
+
+@layer components {
     .court-primary { background: #7954b3; color: #fff; border: 1px solid #7954b3; }
     .court-primary:hover { background: #664198; }
     .court-secondary { color: #78628e; background: #fff; border: 1px solid #e5dfee; }

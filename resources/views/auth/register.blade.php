@@ -6,6 +6,9 @@
 
         <x-validation-errors class="mb-4" />
 
+        @if(session('status'))
+            <p role="status" class="mb-4 text-sm text-gray-700">{{ session('status') }}</p>
+        @endif
         <form method="POST" action="{{ route('register') }}">
             @csrf
 

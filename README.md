@@ -46,10 +46,46 @@ Ambos paneles requieren autenticacion. Los clientes reciben un 403 si intentan
 abrir `/admin`. El perfil, la contrasena, el doble factor y la gestion de sesiones
 siguen utilizando los componentes de Jetstream en `/user/profile`.
 
-El mantenimiento de instalaciones esta disponible; las reservas publicas siguen
-pendientes. No hay datos ni estadisticas simuladas. La web publica no se modifica.
+El mantenimiento de instalaciones y las reservas publicas estan disponibles.
+No hay datos ni estadisticas simuladas.
 Para compilar el diseño: `npm run build`. Al desplegar, subir tambien
 `public/build` y regenerar las caches de configuracion, rutas y vistas.
+
+## Reservas publicas
+
+La portada `/` permite filtrar por club, deporte, fecha y duracion (horas
+completas, conforme al horario semanal configurado). Solo publica pistas activas
+y no archivadas; oculta franjas pasadas, ocupadas o bloqueadas. Los horarios
+utilizan la zona horaria de la aplicacion (`config/app.php`).
+
+Al elegir un horario, los visitantes van al registro con opcion de iniciar
+sesion. Ambos flujos conservan la seleccion y vuelven a la confirmacion, sin
+crear reservas automaticamente. Las nuevas cuentas reciben el rol `customer`.
+Confirmar y consultar `/mis-reservas` requiere autenticacion; cada usuario solo
+ve sus propias reservas, aunque reserve en distintos clubes.
+
+`BookingService` bloquea la fila de la pista dentro de una transaccion, vuelve
+a comprobar disponibilidad y precio, y guarda una reserva confirmada con la
+empresa de la pista y el usuario autenticado. Ignora empresas, usuarios, estados
+e importes adicionales enviados por el navegador. Si cambia la tarifa desde
+la confirmacion, exige revisar el nuevo importe.
+
+La tarifa diaria existente se aplica a las horas acumuladas del mismo jugador,
+pista y fecha. `price_cents` guarda el ajuste respecto a reservas anteriores,
+incluidos abonos negativos, que se muestran explicitamente. No hay pasarela
+de pago ni cobro online; confirmar solo registra la reserva y su importe.
+Las reservas pendientes y confirmadas ocupan horario; las canceladas no.
+La gestion administrativa de reservas y bloqueos no forma parte de esta pantalla.
+Al eliminar una cuenta con Jetstream se conservan las reservas sin vinculo al
+usuario; la eliminacion de la cuenta no cancela automaticamente sus horarios.
+Los futuros escritores de `court_blocks` deben adquirir el mismo bloqueo de
+la pista para serializarse con las reservas.
+
+Antes de desplegar la portada, ejecutar `php artisan migrate --force` para crear
+`bookings` y `court_blocks`, compilar con `npm run build` y subir `public/build`.
+Pruebas aisladas: `DB_CONNECTION=sqlite DB_DATABASE=:memory: php vendor/bin/phpunit
+tests/Feature/PublicBookingTest.php` (en PowerShell, establecer estas variables
+mediante `$env:`).
 
 ## Mantenimiento de pistas (Livewire)
 
